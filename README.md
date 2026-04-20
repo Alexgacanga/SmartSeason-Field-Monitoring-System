@@ -55,11 +55,14 @@ To test the full-stack functionality without creating new accounts, use the foll
 **Admin Account (Full Management Access):**
 * **Username:** `live_admin`
 * **Password:** `adminpassword123`
+<img width="1919" height="992" alt="Screenshot 2026-04-20 121226" src="https://github.com/user-attachments/assets/26821eab-6816-41f5-9066-0e43eabdfb7f" />
+<img width="1919" height="988" alt="Screenshot 2026-04-20 121209" src="https://github.com/user-attachments/assets/8a6f88b6-5aab-4859-83bc-85eb499e9c14" />
 
 **Field Agent Account (Assigned Fields Access):**
 * **Username:** `Julius`
 * **Password:** `Password123`
-
+<img width="1919" height="991" alt="Screenshot 2026-04-20 121256" src="https://github.com/user-attachments/assets/85902559-5ae5-44d2-85cd-5993cb034e13" />
+<img width="1919" height="988" alt="Screenshot 2026-04-20 121123" src="https://github.com/user-attachments/assets/85650c10-5a77-4688-8288-df55cc1c9585" />
 ---
 
 ## 💻 Local Setup Instructions
