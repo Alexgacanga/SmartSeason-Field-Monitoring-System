@@ -32,22 +32,20 @@ class Field(models.Model):
 
     @property
     def computed_status(self):
-        """
-        Core Business Logic: Dynamically compute status to prevent stale database states.
-        """
         if self.current_stage == CropStage.HARVESTED:
             return 'Completed'
 
-        # Fetch the latest update
         latest_update = self.updates.order_by('-recorded_at').first()
 
-        # Logic: If no updates in the last 7 days, flag as At Risk.
         if latest_update:
-            days_since_update = (timezone.now() - latest_update.recorded_at).days
-            if days_since_update > 7 or latest_update.requires_attention:
+            # Use timezone.now() for both to ensure they are both 'aware'
+            now = timezone.now()
+            diff = now - latest_update.recorded_at
+            
+            if diff.days > 7 or latest_update.requires_attention:
                 return 'At Risk'
         else:
-            # If it's been more than 7 days since planting and no updates exist
+            # Logic for no updates since planting
             days_since_planting = (timezone.now().date() - self.planting_date).days
             if days_since_planting > 7:
                  return 'At Risk'

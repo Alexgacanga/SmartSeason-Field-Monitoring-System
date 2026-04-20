@@ -123,76 +123,44 @@ export default function AdminDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-gray-50 text-gray-600 text-sm border-b border-gray-100">
-                    <th className="px-6 py-3 font-medium">Field Name</th>
-                    <th className="px-6 py-3 font-medium">Crop Type</th>
-                    <th className="px-6 py-3 font-medium">Assigned Agent</th>
-                    <th className="px-6 py-3 font-medium">Current Stage</th>
-                    <th className="px-6 py-3 font-medium">
-                      Latest Observation
-                    </th>
-                    <th className="px-6 py-3 font-medium">Last Updated</th>
-                    <th className="px-6 py-3 font-medium">System Status</th>
-                  </tr>
+                    <tr className="bg-gray-50 text-gray-600 text-sm border-b border-gray-100">
+                        <th className="px-6 py-3 font-medium">Field Name</th>
+                        <th className="px-6 py-3 font-medium">Crop Type</th>
+                        <th className="px-6 py-3 font-medium">Assigned Agent</th>
+                        <th className="px-6 py-3 font-medium">Latest Observation</th>
+                        <th className="px-6 py-3 font-medium">Last Updated</th>
+                        <th className="px-6 py-3 font-medium">System Status</th>
+                    </tr>
                 </thead>
                 <tbody className="text-sm">
-                  {fields.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan="5"
-                        className="px-6 py-8 text-center text-gray-500"
-                      >
-                        No fields found. Create one to get started.
-                      </td>
-                    </tr>
-                  ) : (
-                    fields.map((field) => (
-                      <tr
-                        key={field.id}
-                        className="border-b border-gray-50 hover:bg-gray-50 transition"
-                      >
-                        <td className="px-6 py-4 font-medium text-gray-800">
-                          {field.name}
-                        </td>
-                        <td className="px-6 py-4 text-gray-600">
-                          {field.crop_type}
-                        </td>
-                        <td className="px-6 py-4 text-gray-600">
-                          {field.agent_name || "Unassigned"}
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium border border-gray-200">
-                            {field.current_stage}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-gray-600 italic">
-                          {field.latest_observation
-                            ? `"${field.latest_observation}"`
-                            : "No updates"}
-                        </td>
-                        <td className="px-6 py-4 text-gray-500">
-                          {field.last_updated
-                            ? new Date(field.last_updated).toLocaleDateString()
-                            : "N/A"}
-                        </td>
-                        <td className="px-6 py-4">
-                          <span
-                            className={`px-2 py-1 rounded text-xs font-medium ${
-                              field.status === "Active"
-                                ? "bg-green-100 text-green-700"
-                                : field.status === "At Risk"
-                                  ? "bg-red-100 text-red-700"
-                                  : "bg-blue-100 text-blue-700"
-                            }`}
-                          >
-                            {field.status}
-                          </span>
-                        </td>
-                      </tr>
-                    ))
-                  )}
+                    {fields.map((field) => (
+                        <tr key={field.id} className="border-b border-gray-50 hover:bg-gray-50 transition">
+                            <td className="px-6 py-4 font-medium text-gray-800">{field.name}</td>
+                            <td className="px-6 py-4 text-gray-600">{field.crop_type}</td>
+                            <td className="px-6 py-4 text-gray-600">{field.agent_name || 'Unassigned'}</td>
+                            
+                            {/* Observation Column */}
+                            <td className="px-6 py-4 text-gray-600 italic">
+                                {field.latest_observation || "No updates"}
+                            </td>
+                            
+                            {/* Date Column */}
+                            <td className="px-6 py-4 text-gray-500">
+                                {field.last_updated ? new Date(field.last_updated).toLocaleDateString() : "N/A"}
+                            </td>
+
+                            <td className="px-6 py-4">
+                                <span className={`px-2 py-1 rounded text-xs font-medium ${
+                                    field.status === 'Active' ? 'bg-green-100 text-green-700' :
+                                    field.status === 'At Risk' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
+                                }`}>
+                                    {field.status}
+                                </span>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
-              </table>
+            </table>
             </div>
           </div>
         </main>
