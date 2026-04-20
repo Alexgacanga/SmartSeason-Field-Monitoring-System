@@ -14,6 +14,8 @@ class FieldSerializer(serializers.ModelSerializer):
     status = serializers.CharField(source='computed_status', read_only=True) 
     agent_name = serializers.CharField(source='agent.username', read_only=True)
     recent_updates = FieldUpdateSerializer(source='updates', many=True, read_only=True)
+    latest_observation = serializers.SerializerMethodField()
+    last_updated = serializers.SerializerMethodField()
 
     class Meta:
         model = Field
@@ -21,3 +23,11 @@ class FieldSerializer(serializers.ModelSerializer):
             'id', 'name', 'crop_type', 'planting_date', 'current_stage', 
             'agent', 'agent_name', 'status', 'created_at', 'recent_updates'
         ]
+    def get_latest_observation(self, obj):
+        # Access the 'updates' related_name defined in your Model
+        last_update = obj.updates.order_by('-recorded_at').first()
+        return last_update.notes if last_update else "No updates yet"
+
+    def get_last_updated(self, obj):
+        last_update = obj.updates.order_by('-recorded_at').first()
+        return last_update.recorded_at if last_update else None
