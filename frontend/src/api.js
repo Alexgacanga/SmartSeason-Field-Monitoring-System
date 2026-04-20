@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api/',
+    baseURL: 'https://smartseason-field-monitoring-system-1.onrender.com//api/', 
 });
 
 api.interceptors.request.use(
