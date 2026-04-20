@@ -57,8 +57,8 @@ To test the full-stack functionality without creating new accounts, use the foll
 * **Password:** `adminpassword123`
 
 **Field Agent Account (Assigned Fields Access):**
-* **Username:** `agent_tester`
-* **Password:** `agentpassword123`
+* **Username:** `Julius`
+* **Password:** `Password123`
 
 ---
 
