@@ -1,63 +1,80 @@
-# Shamba Records - Field Monitoring System 🌾
+# SmartSeason: Field Monitoring System 🌾
 
-A full-stack web application designed to help agricultural administrators manage crop fields and allow field agents to log real-time progress updates.
-
-## 🚀 Features
-
-### Admin Dashboard (Superuser)
-* **Overview Analytics:** View total fields, active fields, at-risk crops, and completed harvests.
-* **Field Registration:** Create new field profiles (Name, Crop Type, Planting Date).
-* **Agent Assignment:** Dynamically assign registered Field Agents to specific plots of land.
-
-### Field Agent Dashboard
-* **Targeted View:** Agents only see the specific fields assigned to them.
-* **Progress Logging:** Update crop stages (Planted, Growing, Ready, Harvested).
-* **Condition Flagging:** Add observation notes and flag crops as "At Risk" (Requires Attention).
-
-### Security
-* **Role-Based Access Control (RBAC):** Strict routing and API protection based on `ADMIN` or `AGENT` roles.
-* **JWT Authentication:** Secure login using JSON Web Tokens (Access & Refresh tokens).
+### **Software Engineer Intern — Technical Assessment Submission**
+**Candidate:** Gacanga Alex Mwangi  
+**Role:** Software Engineer Intern  
+**Office:** Mitsumi Business Park, Westlands, Nairobi.  
 
 ---
 
-## 🛠️ Technology Stack
+## 🔗 Project Links
+* **Live Deployment:** https://smart-season-field-monitoring-syste-eight.vercel.app/
+* **Backend API (Render):** https://smartseason-field-monitoring-system-1.onrender.com
+* **GitHub Repository:** https://github.com/Alexgacanga/SmartSeason-Field-Monitoring-System.git
 
-**Frontend:**
-* React (Vite)
-* Tailwind CSS (Styling)
-* React Router DOM (Navigation)
-* Axios (API Communication)
+---
 
-**Backend:**
-* Python / Django
-* Django REST Framework (API)
-* SimpleJWT (Authentication)
-* SQLite (Default Database for Development)
+## 🚀 Overview
+SmartSeason is a full-stack field monitoring system built for **Shamba Records**. It enables agricultural administrators to register fields and assign them to field agents, who then provide real-time updates on crop health and growth stages. 
+
+This solution prioritizes **clean separation of concerns**, **secure role-based access**, and **scalable data modeling**.
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+| Layer | Technology | Rationale |
+| :--- | :--- | :--- |
+| **Frontend** | **React (Vite)** + **Tailwind CSS** | Chosen for rapid UI development and high-performance rendering. |
+| **Backend** | **Django REST Framework (DRF)** | Provides a robust, secure, and "batteries-included" framework for building scalable APIs. |
+| **Database** | **PostgreSQL (Neon.tech)** | A reliable relational database to handle complex relationships between users, fields, and updates. |
+| **Auth** | **SimpleJWT** | Implements stateless authentication, allowing for secure cross-origin communication between Vercel and Render. |
+
+---
+
+## 🧠 Design Decisions & Assumptions
+
+### 1. Data Modeling (Relational Integrity)
+I designed a relational schema where a `UserProfile` extends the base Django `User`. 
+* **Decisions:** Used a `TextChoices` field for Roles (`ADMIN` vs `AGENT`). This ensures data integrity at the database level.
+* **Assumption:** I assumed a 1-to-Many relationship between Agents and Fields (one agent can manage multiple fields, but a field is assigned to one primary agent at a time).
+
+### 2. Role-Based Access Control (RBAC)
+* **Decisions:** Implemented a "Traffic Cop" logic on the frontend via a `DashboardRouter`. It decodes the JWT to determine the user's role and prevents unauthorized navigation.
+* **Security:** Backend views use `IsAuthenticated` permissions, ensuring that even if the frontend is bypassed, the API remains protected.
+
+### 3. Deployment Strategy (Simulating Production)
+* **Decisions:** Decoupled the architecture. The frontend is served via **Vercel's Edge Network** for speed, while the backend runs on **Render** connected to a **Neon PostgreSQL** instance. 
+* **Trade-offs:** I prioritized **simplicity and clarity** over over-engineering, using **Whitenoise** for static file handling and **CORS-headers** for cross-origin security.
+
+---
+
+## 🔑 Demo Credentials
+To test the full-stack functionality without creating new accounts, use the following:
+
+**Admin Account (Full Management Access):**
+* **Username:** `live_admin`
+* **Password:** `adminpassword123`
+
+**Field Agent Account (Assigned Fields Access):**
+* **Username:** `Julius`
+* **Password:** `Password123`
 
 ---
 
 ## 💻 Local Setup Instructions
 
-Follow these steps to run the project on your local machine.
-
-### Prerequisites
-* Python 3.10+
-* Node.js & npm
-
 ### 1. Backend Setup
-Open a terminal and navigate to the root directory.
+Navigate to the project root and ensure you have Python 3.10+ installed.
 
 ```bash
-# Create and activate a virtual environment (Windows)
+# Create and activate a virtual environment
 python -m venv venv
-.\venv\Scripts\activate
+source venv/bin/activate  # Or .\venv\Scripts\activate on Windows
 
 # Install required Python packages
-pip install django djangorestframework djangorestframework-simplejwt django-cors-headers
+pip install -r requirements.txt
 
-# Apply database migrations
-python manage.py makemigrations
+# Apply migrations and start server
 python manage.py migrate
-
-# Start the Django development server
 python manage.py runserver
