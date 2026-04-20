@@ -24,9 +24,11 @@ class FieldSerializer(serializers.ModelSerializer):
             'agent', 'agent_name', 'status', 'created_at', 'recent_updates'
         ]
     def get_latest_observation(self, obj):
-        # Access the 'updates' related_name defined in your Model
-        last_update = obj.updates.order_by('-recorded_at').first()
-        return last_update.notes if last_update else "No updates yet"
+        try:
+            last_update = obj.updates.order_by('-recorded_at').first() 
+            return last_update.notes if last_update else "No updates yet"
+        except Exception:
+            return "No updates yet"
 
     def get_last_updated(self, obj):
         last_update = obj.updates.order_by('-recorded_at').first()
