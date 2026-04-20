@@ -10,10 +10,10 @@ class FieldUpdateSerializer(serializers.ModelSerializer):
         read_only_fields = ['recorded_at', 'recorded_by']
 
 class FieldSerializer(serializers.ModelSerializer):
-    # This automatically pulls the @property method from the model
     status = serializers.CharField(source='computed_status', read_only=True) 
     agent_name = serializers.CharField(source='agent.username', read_only=True)
     recent_updates = FieldUpdateSerializer(source='updates', many=True, read_only=True)
+    
     latest_observation = serializers.SerializerMethodField()
     last_updated = serializers.SerializerMethodField()
 
@@ -21,15 +21,27 @@ class FieldSerializer(serializers.ModelSerializer):
         model = Field
         fields = [
             'id', 'name', 'crop_type', 'planting_date', 'current_stage', 
-            'agent', 'agent_name', 'status', 'created_at', 'recent_updates'
+            'agent', 'agent_name', 'status', 'created_at', 'recent_updates',
+            'latest_observation', 'last_updated'
         ]
+
     def get_latest_observation(self, obj):
         try:
-            last_update = obj.updates.order_by('-recorded_at').first() 
-            return last_update.notes if last_update else "No updates yet"
-        except Exception:
+            # We try both common naming patterns to prevent the 500 crash
+            updates = getattr(obj, 'updates', getattr(obj, 'fieldupdate_set', None))
+            if updates:
+                last_update = updates.order_by('-recorded_at').first()
+                return last_update.notes if last_update else "No updates yet"
             return "No updates yet"
+        except Exception as e:
+            return f"Update info unavailable"
 
     def get_last_updated(self, obj):
-        last_update = obj.updates.order_by('-recorded_at').first()
-        return last_update.recorded_at if last_update else None
+        try:
+            updates = getattr(obj, 'updates', getattr(obj, 'fieldupdate_set', None))
+            if updates:
+                last_update = updates.order_by('-recorded_at').first()
+                return last_update.recorded_at if last_update else None
+            return None
+        except Exception:
+            return None
